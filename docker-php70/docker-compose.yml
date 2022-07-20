@@ -28,8 +28,8 @@ phpfpm:
 project:
   image: alpine:latest
   volumes:
-    - ../htdocs:/var/www/htdocs
-  command: "true"
+    - ../../survey-funnel-5:/var/www/htdocs
+  command: "tail -f /dev/null"
 
 mysql:
   image: mysql:5.7
@@ -38,10 +38,10 @@ mysql:
   volumes:
     - ./databases:/var/lib/mysql
   environment:
-    MYSQL_ROOT_PASSWORD: secret_password
-    MYSQL_DATABASE: project1
-    MYSQL_USER: project1
-    MYSQL_PASSWORD: a123456
+    MYSQL_ROOT_PASSWORD: root
+    MYSQL_DATABASE: surveyfunnel
+    MYSQL_USER: default
+    MYSQL_PASSWORD: secret
 
 phpmyadmin:
   image: phpmyadmin/phpmyadmin
@@ -56,3 +56,9 @@ phpmyadmin:
     MYSQL_ROOT_PASSWORD: secret_password
     PMA_HOST: mysql
     PMA_ARBITRARY: 1
+
+mailhog:
+  image: mailhog/mailhog
+  ports:
+    - 1025:1025
+    - 8025:8025
