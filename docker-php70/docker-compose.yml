@@ -4,13 +4,15 @@ services:
     build: ./nginx/
     ports:
       - 80:80
+      - 443:443
+      - 81:81
     links:
       - phpfpm
       - mailhog
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
       - ./logs/nginx:/var/log/nginx
+      - ./nginx/sites:/etc/nginx/sites-available
+      - ./nginx/ssl:/etc/nginx/ssl
     volumes_from:
       - project
 
@@ -38,7 +40,7 @@ services:
   project:
     image: alpine:latest
     volumes:
-      - ../../survey-funnel-5:/var/www/htdocs
+      - ../../SurveyFunnel:/var/www/htdocs
     command: "tail -f /dev/null"
 
   mysql:
