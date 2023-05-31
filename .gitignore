@@ -1,4 +1,12 @@
 .idea/
+docker-php-8.2/databases/*
+docker-php-8.2/databases/.gitkeep
+docker-php-8.2/redis/*
+docker-php-8.2/redis/.gitkeep
+docker-php-8.2/logs/php/*
+docker-php-8.2/logs/php/.gitkeep
+docker-php-8.2/logs/nginx/*
+docker-php-8.2/logs/nginx/.gitkeep
 !docker-php70/databases/.gitkeep
 docker-php70/databases/*
 !docker-php70/logs/nginx/.gitkeep
