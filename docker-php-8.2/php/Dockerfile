@@ -13,13 +13,16 @@ RUN apt-get update && apt-get install -y \
         libxml2-dev \
         zlib1g-dev \
         zip \
+        poppler-utils \
         libcurl4 \
         libpcre3-dev \
         libcurl4-openssl-dev \
-    && docker-php-ext-install -j$(nproc) iconv pdo_mysql \
+    && docker-php-ext-install -j$(nproc) iconv \
+    && docker-php-ext-install mysqli pdo pdo_mysql && docker-php-ext-enable pdo_mysql \
     && docker-php-ext-install -j$(nproc) gd \
     && docker-php-ext-install soap \
     && docker-php-ext-install zip \
+    && docker-php-ext-install dom \
     && docker-php-ext-install intl \
     && docker-php-ext-install exif
 

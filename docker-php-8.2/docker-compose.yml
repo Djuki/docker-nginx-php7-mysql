@@ -64,6 +64,19 @@ services:
       MYSQL_USER: default
       MYSQL_PASSWORD: secret
 
+  mysql8:
+    image: mysql:8.0.33
+    container_name: database8
+    ports:
+      - 3306:3306
+    volumes:
+      - ./databases8:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: surveyfunnel
+      MYSQL_USER: default
+      MYSQL_PASSWORD: secret      
+
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     restart: always
