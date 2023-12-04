@@ -52,6 +52,8 @@ RUN apt-get update; \
 RUN pecl install channel://pecl.php.net/xmlrpc-1.0.0RC3
 RUN docker-php-ext-enable xmlrpc    
 
+RUN pecl install redis && docker-php-ext-enable redis
+
 #ENV NODE_VERSION=8.11.4
 RUN apt install -y curl
 #RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
