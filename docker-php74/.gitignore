@@ -1,2 +1,5 @@
 redis/*
 !redis/.gitkeep
+
+storage/*
+!storage/.gitkeep
