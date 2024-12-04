@@ -26,6 +26,15 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install intl \
     && docker-php-ext-install exif
 
+RUN pecl install swoole
+RUN docker-php-ext-enable swoole    
+
+RUN docker-php-ext-configure pcntl --enable-pcntl \
+    && docker-php-ext-install \
+    pcntl    
+
+RUN docker-php-ext-install sockets
+
 RUN apt update && apt install libsqlite3-dev && docker-php-ext-install pdo_sqlite
 
 RUN apt-get install -y git
@@ -42,7 +51,7 @@ COPY xdebug-3.2.1.tgz /usr/src/php/ext/xdebug.tgz
 RUN tar -xf /usr/src/php/ext/xdebug.tgz -C /usr/src/php/ext/ && \
     rm /usr/src/php/ext/xdebug.tgz && \
     docker-php-ext-install xdebug-3.2.1
-COPY xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
+COPY xdebug.ini /usr/local/etc/php/conf.d/xdebug.inidisable-enable-xdebug.sh
 
 RUN apt-get update; \
     apt-get install -y libmagickwand-dev; \
@@ -68,3 +77,13 @@ RUN apt install -y curl
 # to include ioncube support, uncomment the next two lines
 #COPY ioncube/ioncube_loader_lin_7.1.so /usr/local/lib/php/extensions/no-debug-non-zts-20160303/ioncube_loader_lin_7.1.so
 #COPY ioncube.ini /usr/local/etc/php/php.ini
+
+RUN apt-get update && apt-get install -y locales \
+    && sed -i 's/# sr_RS/sr_RS/' /etc/locale.gen \
+    && sed -i 's/# sr_RS.UTF-8/sr_RS.UTF-8/' /etc/locale.gen \
+    && locale-gen \
+    && update-locale LANG=sr_RS.UTF-8
+
+ENV LANG sr_RS.UTF-8
+ENV LANGUAGE sr_RS:sr
+ENV LC_ALL sr_RS.UTF-8

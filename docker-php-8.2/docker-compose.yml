@@ -16,18 +16,29 @@ services:
       - ./nginx/ssl:/etc/nginx/ssl
     volumes_from:
       - project
-
+    extra_hosts:
+      - snd.test:host-gateway
+      - api.snd.test:host-gateway
+      - kfui.test:host-gateway
+      - snd.com:host-gateway
+      - api.snd.com:host-gateway
+      - assets.snd.com:host-gateway
+      - ws.local.klikfx.com:host-gateway
+    #expose:
+    #  - 8045
   phpfpm:
     build: ./php/
     container_name: php82
     ports:
       - 9000:9000
+      - 9045:9045      
     links:
-      - mysql
+      - mysql8
       - mailhog
     volumes:
       - ./php/phpfpm.conf:/usr/local/etc/php-fpm.d/www.conf
       - ./logs/php:/var/log/php
+      - ~/.ssh/id_rsa:/root/.ssh/id_rsa
     volumes_from:
       - project
     extra_hosts:
@@ -36,13 +47,29 @@ services:
       - wp.local.klikfx.com:host-gateway
       - local.klikfx.com:host-gateway
       - host.docker.internal:host-gateway
-
+      - snd.test:host-gateway
+      - api.snd.test:host-gateway      
+      - snd.com:host-gateway
+      - assets.snd.com:host-gateway
+      - api.snd.com:host-gateway 
+      - kfui.test:host-gateway
+      - ws.local.klikfx.com:host-gateway
+    expose:
+      - 9045
   node:
     image: node:20.8
     container_name: node
     volumes_from:
       - project
-    command: "tail -f /dev/null"   
+    #command: "tail -f /dev/null"  
+    command: "npm run dev --prefix /var/www/html/snd/front"
+    extra_hosts:
+      - snd.test:host-gateway
+      - api.snd.test:host-gateway
+      - snd.com:host-gateway
+      - assets.snd.com:host-gateway
+      - api.snd.com:host-gateway   
+      - ws.local.klikfx.com:host-gateway
 
   redis:
     image: redis:6.2-alpine
@@ -52,7 +79,21 @@ services:
       - '6379:6379'
     command: redis-server --save 20 1 --loglevel warning
     volumes: 
-      - ./redis:/data   
+      - ./redis:/data
+
+  ngrok:
+      image: ngrok/ngrok:latest
+      container_name: ngrok
+      restart: unless-stopped
+      command:
+        - "start"
+        - "--all"
+        - "--config"
+        - "/etc/ngrok.yml"
+      volumes:
+        - /home/djuki/.config/ngrok/ngrok.yml:/etc/ngrok.yml
+      ports:
+        - 4040:4040
 
   project:
     image: alpine:latest
@@ -108,3 +149,9 @@ services:
     ports:
       - 1025:1025
       - 8025:8025
+  swoole:
+    image: phpswoole/swoole
+    environment:
+      DISABLE_DEFAULT_SERVER: 1
+    ports:
+      - 9501:9501      

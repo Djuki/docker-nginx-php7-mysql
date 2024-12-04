@@ -13,4 +13,11 @@ docker-php70/databases/*
 !docker-php70/logs/php/.gitkeep
 docker-php70/logs/*
 !docker-php70/storage/.gitkeep
-!docker-php70/storage/.gitkeep
+!docker-php74/storage/.gitkeep
+!docker-php74/databases/.gitkeep
+docker-php74/databases/*
+!docker-php74/logs/nginx/.gitkeep
+!docker-php74/logs/php/.gitkeep
+docker-php74/logs/*
+!docker-php74/storage/.gitkeep
+!docker-php74/storage/.gitkeep
